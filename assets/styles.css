@@ -10,10 +10,15 @@ body {
 }
 
 h1{
-  border-radius: 25px;
-  background:#efefef;
-  padding:20px;
+  font-family: 'Work Sans', Helvetica, sans-serif;
   border:none;
+  text-align: center;
+  font-size:4em;
+  margin:30px;
+}
+
+.lead{
+  font-style: italic;
 }
 
 .footer {
