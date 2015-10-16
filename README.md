@@ -31,7 +31,7 @@ After, load the `banana.js` file, and finally initialize a new instance with:
 
 ```js
 var banana = new Banana({
-  // Required options
+  // Required
   googleApi: google,
   // Optional
   debug: true
