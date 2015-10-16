@@ -27,11 +27,14 @@ Bananajs requires the Google JS API to work, you just need to add:
 <script src="https://www.google.com/jsapi"></script>
 ```
 
-After you load the `banana.js` file, initialize a new instance with:
+After, load the `banana.js` file, and finally initialize a new instance with:
 
 ```js
 var banana = new Banana({
-  googleApi: google
+  // Required options
+  googleApi: google,
+  // Optional
+  debug: true
 });
 ```
 
