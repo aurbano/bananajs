@@ -29,14 +29,16 @@
 
      options.googleApi.load("search", "1");
 
-     function getImageColor(url) {
+     function getImageColor(url, number) {
          return new Promise(function(resolve) {
              var img = new Image();
              img.crossOrigin = "";
              img.onload = function() {
                  try {
-                     var color = Banana.thief.getColor(img, 10);
-                     resolve(color);
+                     resolve({
+                         color: Banana.thief.getColor(img, options.quality || 10),
+                         palette: Banana.thief.getPalette(img, number)
+                     });
                  } catch (e) {
                      log("Bananajs: Image download failed");
                      resolve(null);
@@ -49,7 +51,7 @@
          });
      }
 
-     function getRGBData(colorName) {
+     function getRGBData(colorName, number) {
          return new Promise(function(resolve, reject) {
              // Create an Image Search instance.
              var imageSearch = new options.googleApi.search.ImageSearch();
@@ -69,7 +71,7 @@
 
                  images.forEach(function(image) {
                      log("Bananajs: Loading image: ", image.url);
-                     promises.push(getImageColor(image.url));
+                     promises.push(getImageColor(image.url, number));
                  });
 
                  Promise.all(promises).then(function(data) {
@@ -83,20 +85,19 @@
      }
 
      function getColor(colorName, resolve) {
-         getRGBData(colorName).then(function(data) {
+         getRGBData(colorName, 0).then(function(data) {
              var r = 0,
                  g = 0,
                  b = 0,
                  count = 0;
-             data.forEach(function(color) {
-                 if (color !== null) {
+             data.forEach(function(info) {
+                 if (info !== null) {
                      count++;
-                     r += color[0];
-                     g += color[1];
-                     b += color[2];
+                     r += info.color[0];
+                     g += info.color[1];
+                     b += info.color[2];
                  }
              });
-             log("Bananajs: Finished processing, color: ", r, g, b);
              r /= count;
              g /= count;
              b /= count;
@@ -104,7 +105,39 @@
              g = Math.round(g);
              b = Math.round(b);
 
+             log("Bananajs: Finished processing, color: ", r, g, b);
+
              resolve([r, g, b]);
+         });
+     }
+
+     function getPalette(colorName, number, resolve) {
+         getRGBData(colorName, number).then(function(data) {
+             var palette = [],
+                 count = 0,
+                 i;
+             for (i = 0; i < number; i++) {
+                 palette[i] = [0,0,0];
+             }
+             data.forEach(function(info) {
+                 if (info !== null && info.palette.length > 0) {
+                     count++;
+                     for (i = 0; i < info.palette.length; i++) {
+                         palette[i][0] += info.palette[i][0];
+                         palette[i][1] += info.palette[i][1];
+                         palette[i][2] += info.palette[i][2];
+                     }
+                 }
+             });
+             for (i = 0; i < palette.length; i++) {
+                 palette[i][0] = Math.round(palette[i][0] / count);
+                 palette[i][1] = Math.round(palette[i][1] / count);
+                 palette[i][2] = Math.round(palette[i][2] / count);
+             }
+
+             log("Bananajs: Finished processing, palette: ", palette);
+
+             resolve(palette);
          });
      }
 
@@ -120,14 +153,14 @@
          );
      };
 
-     Banana.getPalette = function(colorName) {
+     Banana.getPalette = function(colorName, number) {
          log("Bananajs: Processing palette for '" + colorName + "'");
          return new Promise(
              // The resolver function is called with the ability to resolve or
              // reject the promise
              function(resolve, reject) {
-                 getPalette(colorName, resolve, reject);
+                 getPalette(colorName, number, resolve, reject);
              }
          );
-     }
+     };
  };

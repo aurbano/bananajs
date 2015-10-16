@@ -27,6 +27,12 @@
                 <div style="width:150px; margin:0 auto">
                     <small class="text-muted text-center" style="display:block" id="colorResultRGB"></small>
                     <div class="img-thumbnail" id="colorResult" style="width:150px; height:150px"></div>
+                    <div class="text-center">
+                      <div class="img-thumbnail palette" id="palette1"></div>
+                      <div class="img-thumbnail palette" id="palette2"></div>
+                      <div class="img-thumbnail palette" id="palette3"></div>
+                      <div class="img-thumbnail palette" id="palette4"></div>
+                    </div>
                 </div>
                 <div style="width:300px; margin:20px auto; text-align:center">
                     <form id="colorForm" class="form-inline">
@@ -57,12 +63,23 @@
         debug: true
     });
 
+    function getRGBString(rgbArray){
+      return "rgb(" + rgbArray[0] + "," + rgbArray[1] + "," + rgbArray[2] + ")";
+    }
+
     function displayColor() {
         $("#colorResultRGB").text("Loading...");
         banana.getColor($("#colorKeyword").val()).then(function(color) {
-            var rgb = "rgb(" + color[0] + "," + color[1] + "," + color[2] + ")";
+            var rgb = getRGBString(color);
             $("#colorResult").css("backgroundColor", rgb);
             $("#colorResultRGB").text(rgb);
+        });
+
+        banana.getPalette($("#colorKeyword").val(), 4).then(function(palette) {
+            $("#palette1").css("backgroundColor", getRGBString(palette[0]));
+            $("#palette2").css("backgroundColor", getRGBString(palette[1]));
+            $("#palette3").css("backgroundColor", getRGBString(palette[2]));
+            $("#palette4").css("backgroundColor", getRGBString(palette[3]));
         });
     }
 

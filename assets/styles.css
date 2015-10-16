@@ -21,6 +21,12 @@ h1{
   font-style: italic;
 }
 
+.palette{
+  width:33px;
+  height:33px;
+  display:inline-block;
+}
+
 .footer {
   position: absolute;
   bottom: 0;
