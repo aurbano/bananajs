@@ -49,6 +49,7 @@
         <div class="container">
             <p class="text-muted">
                 &copy; <a href="http://urbanoalvarez.es">Alejandro U. Alvarez</a> (2015) - <a href="https://github.com/aurbano/bananajs">Bananajs</a>
+                <div id="branding"></div>
             </p>
         </div>
     </footer>
@@ -89,6 +90,9 @@
             event.preventDefault();
             displayColor();
         });
+
+        // Include the required Google branding
+        google.search.Search.getBranding("branding");
     });
     </script>
 </body>
