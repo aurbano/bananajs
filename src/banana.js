@@ -2,8 +2,12 @@
   * BananaJs
   * Get an RGB color palette from a set of keywords
   *
+  * (c) 2015-2020 Alejandro U. Alvarez
+  * Bananajs may be freely distributed under the MIT license.
+  * For all details and documentation:
+  * http://github.com/aurbano/bananajs
+  *
   * @author Alejandro U. Alvarez <urbanoalvarez.es>
-  * @homepage http://github.com/aurbano/bananajs
   * @license MIT License
   */
  "use strict";

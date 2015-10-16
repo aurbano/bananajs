@@ -13,7 +13,7 @@
       });
 
       google.setOnLoadCallback(function(){
-        var colorPromise = banana.getColor("banana");
+        var colorPromise = banana.getColor("strawberry");
         colorPromise.then(function(color){
           document.body.style.background = "rgb("+color[0]+","+color[1]+","+color[2],")";
         });
