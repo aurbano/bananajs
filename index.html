@@ -1,28 +1,90 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>Bananajs Demo</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="assets/styles.css">
+</head>
+
+<body style="font-family: Arial;border: 0 none;">
+    <!-- Begin page content -->
+    <div class="container">
+        <nav class="navbar navbar-default" style="margin-top:20px">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="htts://github.com/aurbano/bananajs" style="position:relative;">
+                        <img src="assets/banana.gif" style="position:absolute; bottom:1px" />
+                        <div style="padding-left:50px">
+                            Bananajs
+                        </div>
+                    </a>
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="https://github.com/aurbano/bananajs">Github</a></li>
+                </ul>
+            </div>
+        </nav>
+        <p class="lead text-center">Get a color from a keyword (give it banana, get yellow)</p>
+        <div style="margin-bottom:100px"></div>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 col-xs-12 col-sm-10 col-sm-offset-1">
+                <div class="col-md-7 col-sm-7 col-xs-7">
+                    <form id="colorForm">
+                        <div class="form-group">
+                            <label for="colorKeyword">Look for</label>
+                            <input type="text" class="form-control" value="strawberry" id="colorKeyword" placeholder="Enter any text...">
+                        </div>
+                        <button type="submit" class="btn btn-default">Go</button>
+                    </form>
+                </div>
+                <div class="col-md-5 col-sm-5 col-xs-5">
+                    <div class="img-thumbnail" id="colorResult" style="width:150px; height:150px"></div>
+                    <small class="text-muted text-center" style="width:150px; display:inline-block" id="colorResultRGB"></small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="container">
+            <p class="text-muted">
+                &copy; <a href="http://urbanoalvarez.es">Alejandro U. Alvarez</a> (2015) - <a href="https://github.com/aurbano/bananajs">Bananajs</a>
+            </p>
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="https://www.google.com/jsapi"></script>
     <script src="lib/colorthief.js"></script>
     <script src="src/banana.js"></script>
     <script type="text/javascript">
-      var banana = new Bananajs({
+    var banana = new Bananajs({
         googleApi: google,
         debug: true
-      });
+    });
 
-      google.setOnLoadCallback(function(){
-        var colorPromise = banana.getColor("strawberry");
-        colorPromise.then(function(color){
-          document.body.style.background = "rgb("+color[0]+","+color[1]+","+color[2],")";
+    function displayColor() {
+        $("#colorResultRGB").text("Loading...");
+        banana.getColor($("#colorKeyword").val()).then(function(color) {
+            var rgb = "rgb(" + color[0] + "," + color[1] + "," + color[2] + ")";
+            $("#colorResult").css("backgroundColor", rgb);
+            $("#colorResultRGB").text(rgb);
         });
-      });
-    </script>
+    }
 
-  </head>
-  <body style="font-family: Arial;border: 0 none;">
-    <div id="branding"  style="float: left;"></div><br />
-    <img id="content" src=""/>
-  </body>
+    google.setOnLoadCallback(function() {
+        displayColor();
+        $("#colorForm").submit(function(event){
+          event.preventDefault();
+          displayColor();
+        });
+    });
+    </script>
+</body>
+
 </html>
