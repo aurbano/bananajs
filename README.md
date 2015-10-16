@@ -4,6 +4,8 @@
 
 Bananajs takes the specified keyword and searches for it in Google Images. It then takes the returned images, looks at their dominant colors, and calculates the average of all.
 
+### [Demo](http://urbanoalvarez.es/bananajs)
+
 ## Example
 
 ```js
