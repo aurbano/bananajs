@@ -59,7 +59,7 @@ banana.getColor("strawberry").then(function(color){
 
 ## Contributing
 
-Contributions to this extremely useful library are more than welcome, feel free to send a pull request with your proposed changes. Follow similar coding practices if possible.
+Contributions to this extremely useful library are more than welcome, feel free to send a pull request to **the develop branch** with your proposed changes. Follow similar coding practices if possible.
 
 ## Meta
 
