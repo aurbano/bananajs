@@ -40,3 +40,9 @@ h1{
 .footer .text-muted {
     margin: 20px 0;
 }
+
+#branding{
+  position:absolute;
+  top:20px;
+  right:20px;
+}
