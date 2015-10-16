@@ -28,10 +28,10 @@
                     <small class="text-muted text-center" style="display:block" id="colorResultRGB"></small>
                     <div class="img-thumbnail" id="colorResult" style="width:150px; height:150px"></div>
                     <div class="text-center">
-                      <div class="img-thumbnail palette" id="palette1"></div>
-                      <div class="img-thumbnail palette" id="palette2"></div>
-                      <div class="img-thumbnail palette" id="palette3"></div>
-                      <div class="img-thumbnail palette" id="palette4"></div>
+                      <div class="img-thumbnail palette" data-toggle="tooltip" data-placement="top" id="palette1"></div>
+                      <div class="img-thumbnail palette" data-toggle="tooltip" data-placement="top" id="palette2"></div>
+                      <div class="img-thumbnail palette" data-toggle="tooltip" data-placement="top" id="palette3"></div>
+                      <div class="img-thumbnail palette" data-toggle="tooltip" data-placement="top" id="palette4"></div>
                     </div>
                 </div>
                 <div style="width:300px; margin:20px auto; text-align:center">
@@ -77,15 +77,18 @@
         });
 
         banana.getPalette($("#colorKeyword").val(), 4).then(function(palette) {
-            $("#palette1").css("backgroundColor", getRGBString(palette[0]));
-            $("#palette2").css("backgroundColor", getRGBString(palette[1]));
-            $("#palette3").css("backgroundColor", getRGBString(palette[2]));
-            $("#palette4").css("backgroundColor", getRGBString(palette[3]));
+            $("#palette1").css("backgroundColor", getRGBString(palette[0])).attr("title", getRGBString(palette[0]));
+            $("#palette2").css("backgroundColor", getRGBString(palette[1])).attr("title", getRGBString(palette[1]));
+            $("#palette3").css("backgroundColor", getRGBString(palette[2])).attr("title", getRGBString(palette[2]));
+            $("#palette4").css("backgroundColor", getRGBString(palette[3])).attr("title", getRGBString(palette[3]));
+
+            $('[data-toggle="tooltip"]').tooltip();
         });
     }
 
     google.setOnLoadCallback(function() {
         displayColor();
+
         $("#colorForm").submit(function(event) {
             event.preventDefault();
             displayColor();
