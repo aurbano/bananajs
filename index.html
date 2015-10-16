@@ -10,26 +10,16 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="assets/styles.css">
+    <link href='https://fonts.googleapis.com/css?family=Work+Sans:100' rel='stylesheet' type='text/css'>
 </head>
 
 <body style="font-family: Arial;border: 0 none;">
     <!-- Begin page content -->
     <div class="container">
-        <nav class="navbar navbar-default" style="margin-top:20px">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="htts://github.com/aurbano/bananajs" style="position:relative;">
-                        <img src="assets/banana.gif" style="position:absolute; bottom:1px" />
-                        <div style="padding-left:50px">
-                            Bananajs
-                        </div>
-                    </a>
-                </div>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="https://github.com/aurbano/bananajs">Github</a></li>
-                </ul>
-            </div>
-        </nav>
+        <h1>
+          <img src="assets/banana.gif" style="padding-bottom: 23px"/>
+          Bananajs
+        </h1>
         <p class="lead text-center">Get a color from a keyword (give it banana, get yellow)</p>
         <div style="margin-bottom:100px"></div>
         <div class="row">
@@ -78,9 +68,9 @@
 
     google.setOnLoadCallback(function() {
         displayColor();
-        $("#colorForm").submit(function(event){
-          event.preventDefault();
-          displayColor();
+        $("#colorForm").submit(function(event) {
+            event.preventDefault();
+            displayColor();
         });
     });
     </script>
