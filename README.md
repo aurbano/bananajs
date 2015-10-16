@@ -53,9 +53,17 @@ banana.getColor("strawberry").then(function(color){
 });
 ```
 
-### `banana.getPalette(string)`
+### `banana.getPalette(string, number)`
 
-**Not ready yet**
+This function takes any string, and returns a promise that when resolved will return an array of arrays of ints `[r,g,b]`. You can specify how many colors you want in the palette in the `number` parameter.
+
+```js
+// Get 4 colors for the keyword "strawberry"
+banana.getPalette("strawberry", 4).then(function(palette){
+  // Use the first color as background
+  document.body.style.background = "rgb("+palette[0][0]+","+palette[0][1]+","+palette[0][2],")";
+});
+```
 
 ## Contributing
 
