@@ -82,7 +82,7 @@
          });
      }
 
-     function getColor(colorName, resolve, reject) {
+     function getColor(colorName, resolve) {
          getRGBData(colorName).then(function(data) {
              var r = 0,
                  g = 0,
@@ -100,6 +100,9 @@
              r /= count;
              g /= count;
              b /= count;
+             r = Math.round(r);
+             g = Math.round(g);
+             b = Math.round(b);
 
              resolve([r, g, b]);
          });
