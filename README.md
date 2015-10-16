@@ -71,4 +71,4 @@ Contributions to this extremely useful library are more than welcome, feel free 
 
 ## Meta
 
-&copy; Alejandro U. Alvarez (2015) - Licensed under the MIT License
+&copy; [Alejandro U. Alvarez](http://urbanoalvarez.es) (2015) - Licensed under the MIT License
