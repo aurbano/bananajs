@@ -15,13 +15,20 @@
  var Bananajs = function(options) {
 
      var Banana = this;
-     Banana.thief = new ColorThief();
 
      if (typeof(options.googleApi) === "undefined") {
          throw {
-             message: "Error: NamedColors: The Google API was not passed, please pass {googleApi: google}"
+             message: "Error: Bananajs: The Google API was not passed, please pass {googleApi: google}"
          };
      }
+
+     if (typeof(ColorThief) === "undefined") {
+         throw {
+             message: "Error: Bananajs: Please include ColorThief"
+         };
+     }
+
+     Banana.thief = new ColorThief();
 
      var log = function() {
          if (options.debug) console.log.apply(console, arguments);
@@ -144,10 +151,7 @@
      // Expose API
      Banana.getColor = function(colorName) {
          log("Bananajs: Processing color for '" + colorName + "'");
-         return new Promise(
-             // The resolver function is called with the ability to resolve or
-             // reject the promise
-             function(resolve, reject) {
+         return new Promise(function(resolve, reject) {
                  getColor(colorName, resolve, reject);
              }
          );
@@ -155,10 +159,7 @@
 
      Banana.getPalette = function(colorName, number) {
          log("Bananajs: Processing palette for '" + colorName + "'");
-         return new Promise(
-             // The resolver function is called with the ability to resolve or
-             // reject the promise
-             function(resolve, reject) {
+         return new Promise(function(resolve, reject) {
                  getPalette(colorName, number, resolve, reject);
              }
          );
