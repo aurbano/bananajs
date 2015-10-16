@@ -34,12 +34,12 @@ var Bananajs = function(options) {
     debug: options.debug || false, // debug on/off
     quality: options.quality || 10, // quality setting for Color Thief
     minImages: options.minImages || 1, // minimum number of images required for sampling
-    images: options.images || 4, // initial number of images requested to google
-    maxImages: options.maxImages || 4 // maximum number of images before giving up
+    images: options.images || 10, // initial number of images requested to google
+    maxImages: options.maxImages || 4 // maximum number of failed images before giving up
   };
 
   var log = function() {
-    if (options.debug) console.log.apply(console, arguments);
+    if (Banana.options.debug) console.log.apply(console, arguments);
   };
 
   options.googleApi.load("search", "1");
@@ -51,7 +51,7 @@ var Bananajs = function(options) {
       img.onload = function() {
         try {
           resolve({
-            color: Banana.thief.getColor(img, options.quality || 10),
+            color: Banana.thief.getColor(img, Banana.options.quality || 10),
             palette: Banana.thief.getPalette(img, number)
           });
         } catch (e) {
@@ -59,7 +59,8 @@ var Bananajs = function(options) {
           resolve(null);
         }
       };
-      img.onerror = function() {
+      img.onerror = function(e) {
+        log("Bananajs: Image download failed");
         resolve(null);
       };
       img.src = url;
@@ -70,6 +71,8 @@ var Bananajs = function(options) {
     return new Promise(function(resolve, reject) {
       // Create an Image Search instance.
       var imageSearch = new options.googleApi.search.ImageSearch();
+
+      imageSearch.setResultSetSize(Banana.options.images);
 
       // Set searchComplete as the callback function when a search is 
       // complete.  The imageSearch object will have results in it.
@@ -120,7 +123,7 @@ var Bananajs = function(options) {
       g = Math.round(g);
       b = Math.round(b);
 
-      log("Bananajs: Finished processing, color: ", r, g, b);
+      log("Bananajs: Finished processing (sampled "+count+" images), color: ", r, g, b);
 
       resolve([r, g, b]);
     });
@@ -150,7 +153,7 @@ var Bananajs = function(options) {
         palette[i][2] = Math.round(palette[i][2] / count);
       }
 
-      log("Bananajs: Finished processing, palette: ", palette);
+      log("Bananajs: Finished processing (sampled "+count+" images), palette: ", palette);
 
       resolve(palette);
     });
