@@ -12,24 +12,28 @@
   <link rel="stylesheet" href="assets/styles.css">
   <link href='https://fonts.googleapis.com/css?family=Work+Sans:100' rel='stylesheet' type='text/css'>
   <style type="text/css">
-  .colorContainer{
-    display:inline-block;
-    margin:0 25px 15px 0;
+  .colorContainer {
+    display: inline-block;
+    margin: 0 25px 15px 0;
     text-align: center;
-    width:125px;
+    width: 125px;
   }
+  
   .colorBox {
     width: 50px;
     height: 50px;
   }
-  .colorBox:first-child{
-    margin-right:5px;
+  
+  .colorBox:first-child {
+    margin-right: 5px;
   }
-  .colorBox:hover{
+  
+  .colorBox:hover {
     transform: scale(1.1, 1.1);
   }
-  .colorName{
-    color:#888;
+  
+  .colorName {
+    color: #888;
     font-style: italic;
   }
   </style>
@@ -44,7 +48,7 @@
     </a></h1>
     <div class="lead text-center">
       <p>How do CSS3 named colors compare to what Google thinks they are?</p>
-      <p><small class="text-muted">Display: Official color | Bananajs version</small></p>
+      <p><small class="text-muted">Display: Official color | Bananajs version &bull; <a href="https://github.com/aurbano/bananajs">More info</a></small></p>
     </div>
     <div style="margin-bottom:100px"></div>
     <div class="row">
@@ -77,31 +81,39 @@
     return "rgb(" + rgbArray[0] + "," + rgbArray[1] + "," + rgbArray[2] + ")";
   }
 
-  function displayColor() {
-    $("#colorResultRGB").text("Loading...");
-    banana.getColor($("#colorKeyword").val()).then(function(color) {
-      var rgb = getRGBString(color);
-      $("#colorResult").css("backgroundColor", rgb);
-      $("#colorResultRGB").text(rgb);
-    });
-
-    banana.getPalette($("#colorKeyword").val(), 4).then(function(palette) {
-      $("#palette1").css("backgroundColor", getRGBString(palette[0])).attr("title", getRGBString(palette[0]));
-      $("#palette2").css("backgroundColor", getRGBString(palette[1])).attr("title", getRGBString(palette[1]));
-      $("#palette3").css("backgroundColor", getRGBString(palette[2])).attr("title", getRGBString(palette[2]));
-      $("#palette4").css("backgroundColor", getRGBString(palette[3])).attr("title", getRGBString(palette[3]));
-    });
-  }
-
   google.setOnLoadCallback(function() {
-    var $colorContainer = $("#colorContainer");
+    var $colorContainer = $("#colorContainer"),
+      allColors = {},
+      promises = [],
+      count = 0;
 
     for (var namedColor in CSS_NAMED_COLORS) {
+      count++;
+      if (count > 4) break;
+      var id = namedColor.replace(/ /g, '-');
+
       $colorContainer.append('<div class="colorContainer">' +
-        '<div class="img-thumbnail colorBox" data-toggle="tooltip" title="' + CSS_NAMED_COLORS[namedColor] + '" style="background:' + CSS_NAMED_COLORS[namedColor] + '"></div>' + 
-        '<div class="img-thumbnail colorBox" data-toggle="tooltip"></div>' +
+        '<div class="img-thumbnail colorBox" data-toggle="tooltip" title="' + CSS_NAMED_COLORS[namedColor] + '" style="background:' + CSS_NAMED_COLORS[namedColor] + '"></div>' +
+        '<div class="img-thumbnail colorBox" id="' + id + '" data-toggle="tooltip"></div>' +
         '<div class="colorName">' + namedColor + "</div></div>");
+
+      // Get color
+      (function(id, namedColor) {
+        promises.push(banana.getColor(namedColor).then(function(color) {
+          var rgb = getRGBString(color);
+          $('#' + id).css("backgroundColor", rgb);
+
+          allColors[namedColor] = {
+            css: CSS_NAMED_COLORS[namedColor],
+            banana: rgb
+          };
+        }))
+      })(id, namedColor);
     }
+
+    Promise.all(promises).then(function() {
+      console.log(allColors, JSON.stringify(allColors));
+    });
 
     $('[data-toggle="tooltip"]').tooltip();
 
