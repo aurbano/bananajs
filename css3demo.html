@@ -11,6 +11,28 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
   <link rel="stylesheet" href="assets/styles.css">
   <link href='https://fonts.googleapis.com/css?family=Work+Sans:100' rel='stylesheet' type='text/css'>
+  <style type="text/css">
+  .colorContainer{
+    display:inline-block;
+    margin:0 25px 15px 0;
+    text-align: center;
+    width:125px;
+  }
+  .colorBox {
+    width: 50px;
+    height: 50px;
+  }
+  .colorBox:first-child{
+    margin-right:5px;
+  }
+  .colorBox:hover{
+    transform: scale(1.1, 1.1);
+  }
+  .colorName{
+    color:#888;
+    font-style: italic;
+  }
+  </style>
 </head>
 
 <body style="font-family: Arial;border: 0 none;">
@@ -20,28 +42,14 @@
       <img src="assets/banana.gif" style="padding-bottom: 23px"/>
       Bananajs
     </a></h1>
-    <p class="lead text-center">Get a color from a keyword (give it banana, get yellow)</p>
+    <div class="lead text-center">
+      <p>How do CSS3 named colors compare to what Google thinks they are?</p>
+      <p><small class="text-muted">Display: Official color | Bananajs version</small></p>
+    </div>
     <div style="margin-bottom:100px"></div>
     <div class="row">
-      <div class="col-md-12">
-        <div style="width:150px; margin:0 auto">
-          <small class="text-muted text-center" style="display:block" id="colorResultRGB"></small>
-          <div class="img-thumbnail" id="colorResult" style="width:150px; height:150px"></div>
-          <div class="text-center">
-            <div class="img-thumbnail palette" data-toggle="tooltip" data-placement="top" id="palette1"></div>
-            <div class="img-thumbnail palette" data-toggle="tooltip" data-placement="top" id="palette2"></div>
-            <div class="img-thumbnail palette" data-toggle="tooltip" data-placement="top" id="palette3"></div>
-            <div class="img-thumbnail palette" data-toggle="tooltip" data-placement="top" id="palette4"></div>
-          </div>
-        </div>
-        <div style="width:300px; margin:20px auto; text-align:center">
-          <form id="colorForm" class="form-inline">
-            <div class="form-group">
-              <input type="text" class="form-control" value="banana" id="colorKeyword" placeholder="Enter any text...">
-            </div>
-            <button type="submit" class="btn btn-default">Go</button>
-          </form>
-        </div>
+      <div class="col-md-12 text-center">
+        <div id="colorContainer"></div>
       </div>
     </div>
   </div>
@@ -57,6 +65,7 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
   <script src="https://www.google.com/jsapi"></script>
   <script src="lib/colorthief.js"></script>
+  <script src="lib/colors.js"></script>
   <script src="src/banana.js"></script>
   <script type="text/javascript">
   var banana = new Bananajs({
@@ -81,18 +90,20 @@
       $("#palette2").css("backgroundColor", getRGBString(palette[1])).attr("title", getRGBString(palette[1]));
       $("#palette3").css("backgroundColor", getRGBString(palette[2])).attr("title", getRGBString(palette[2]));
       $("#palette4").css("backgroundColor", getRGBString(palette[3])).attr("title", getRGBString(palette[3]));
-
-      $('[data-toggle="tooltip"]').tooltip();
     });
   }
 
   google.setOnLoadCallback(function() {
-    displayColor();
+    var $colorContainer = $("#colorContainer");
 
-    $("#colorForm").submit(function(event) {
-      event.preventDefault();
-      displayColor();
-    });
+    for (var namedColor in CSS_NAMED_COLORS) {
+      $colorContainer.append('<div class="colorContainer">' +
+        '<div class="img-thumbnail colorBox" data-toggle="tooltip" title="' + CSS_NAMED_COLORS[namedColor] + '" style="background:' + CSS_NAMED_COLORS[namedColor] + '"></div>' + 
+        '<div class="img-thumbnail colorBox" data-toggle="tooltip"></div>' +
+        '<div class="colorName">' + namedColor + "</div></div>");
+    }
+
+    $('[data-toggle="tooltip"]').tooltip();
 
     // Include the required Google branding
     google.search.Search.getBranding("branding");
